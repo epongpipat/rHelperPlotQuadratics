@@ -1,0 +1,14 @@
+authors:
+  - Ekarin E. Pongpipat:
+    - href: https://ekarinpongpipat.com
+      
+reference:
+- title: Functions
+- contents:
+  - lacks_concepts(c('util', 'viz'))
+- title: Visualization
+- contents:
+  - has_concept('viz')
+- title: Utilities
+- contents:
+  - has_concept("util")
