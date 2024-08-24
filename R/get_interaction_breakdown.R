@@ -26,10 +26,18 @@ get_interaction_breakdown <- function(model, x_var, m_vars = NULL, type = c('ss'
       # filter(rh == info$vars$x$p2)
     for (j in 1:ncol(data[['ss']])) {
       data[['ss']][, j] <- as_numeric(data[['ss']][, j])
+      if (str_detect(colnames(data[["ss"]])[j], 'm') & is.numeric(data[["ss"]][, j])) {
+        data[["ss"]][, j] <- round(data[["ss"]][, j], 3)
+      }
     }
     cat('\nsimple slopes:\n')
-    print(data[["ss"]] %>%
-      filter(rh == info$vars$x$p2))
+    df_temp <- data[["ss"]] %>%
+      filter(rh == info$vars$x$p2)
+    colnames(df_temp)[str_detect(colnames(df_temp), 'm')] <- names(info$vars$m)
+    # for (i in 1:ncol(df_temp)) {
+    #
+    # }
+    print(df_temp)
   }
 
   if ('jn' %in% type) {
@@ -44,6 +52,9 @@ get_interaction_breakdown <- function(model, x_var, m_vars = NULL, type = c('ss'
       select(-rh)
     for (j in 1:ncol(data[["jn"]])) {
       data[["jn"]][, j] <- as_numeric(data[["jn"]][, j])
+      if (str_detect(colnames(data[["jn"]])[j], 'm') & is.numeric(data[["jn"]][, j])) {
+        data[["jn"]][, j] <- round(data[["jn"]][, j], 3)
+      }
     }
     cat('\njohnson-neyman intervals:\n')
     print(get_jn_sig_all(data[['jn']], info))

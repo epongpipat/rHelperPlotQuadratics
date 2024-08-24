@@ -12,7 +12,7 @@
 #' @import dplyr
 #' @import purrr
 #' @examples
-get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .1, round = 3) {
+get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, round = 3) {
 
   vars <- list()
   data <- list()
@@ -21,6 +21,8 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .1, roun
   data <- list(original = ds,
                unscaled = ds_unscaled)
   v <- colnames(ds) %>% str_subset(x_var)
+  v_clean <- str_remove_fun_from_term(v)
+  v <- v[v_clean == x_var]
   vars$x$name <- x_var
   vars$x$p1 <- v[!str_detect(v, "\\^2")]
   vars$x$p2 <- v[str_detect(v, "\\^2")]
@@ -60,8 +62,12 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .1, roun
   vars$o$control <- vars$formula$rh %>%
     str_split('[[+]]') %>%
     unlist() %>%
-    str_subset(x_var, negate = TRUE) %>%
-    str_trim()
+    str_split('[[:]]|[[*]]') %>%
+    unlist() %>%
+    str_trim() %>%
+    unique() %>%
+    str_remove_fun_from_term()
+  vars$o$control <- vars$o$control[vars$o$control != x_var]
 
   if (is.null(m_vars)) {
     vars_filter <- c(x_var)
@@ -83,8 +89,24 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .1, roun
 
 
   grid <- list()
-  grid$jn <- data.frame(seq(from = min(ds_unscaled[, x_var]), to = max(ds_unscaled[, x_var]), by = x_step))
+  # x_step <- sd(ds_unscaled[, x_var])
+
+  # scale_min_max <- function(x) {
+  #   y <- (x - min(x)) / (max(x) - min(x))
+  #   attr(y, 'min') <- min(x)
+  #   attr(y, 'max') <- max(x)
+  #   return(y)
+  # }
+
+  # x_min <- min(ds_unscaled[, x_var])
+  # x_max <- max(ds_unscaled[, x_var])
+  # scale_min_max(ds_unscaled[, x_var])
+
+  # seq(from = 0, to = 1, by = 0.01) * (max(ds_unscaled[, x_var]) - min(ds_unscaled[, x_var])) + min(ds_unscaled[, x_var])
+
+  # grid$jn <- data.frame(seq(from = min(ds_unscaled[, x_var]), to = max(ds_unscaled[, x_var]), by = x_step))
   # grid$jn <- data.frame(sort(unique(ds_unscaled[, x_var])))
+  grid$jn <- data.frame(x = seq(from = 0, to = 1, by = x_step) * (max(ds_unscaled[, x_var]) - min(ds_unscaled[, x_var])) + min(ds_unscaled[, x_var]))
   colnames(grid$jn) <- x_var
 
   if (!is.null(m_vars)) {
@@ -101,15 +123,13 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .1, roun
         vars$m[[m_var]]$levels <- c("-1sd" = vars$m[[m_var]]$mean - vars$m[[m_var]]$sd,
                                     "0sd" = vars$m[[m_var]]$mean,
                                     "+1sd" = vars$m[[m_var]]$mean + vars$m[[m_var]]$sd)
-        vars$m[[m_var]]$levels_rounded <- round(c("-1sd" = vars$m[[m_var]]$mean - vars$m[[m_var]]$sd,
-                                    "0sd" = vars$m[[m_var]]$mean,
-                                    "+1sd" = vars$m[[m_var]]$mean + vars$m[[m_var]]$sd), round)
+        vars$m[[m_var]]$levels_rounded <- round(vars$m[[m_var]]$levels, round)
         vars$formula$jn <- vars$formula$jn %>%
-          remove_scale_from_formula(., m_var)
+          str_remove_scale_from_formula(., m_var)
         # update formula
         # probably needs to be more thorough
         vars$formula$ss <- vars$formula$ss %>%
-          remove_scale_from_formula(., m_var)
+          str_remove_scale_from_formula(., m_var)
           # str_replace_all(glue("scale\\({m_var}"), m_var) %>%
           # str_replace_all(glue("{m_var}, scale = F\\)"), m_var)
 

@@ -19,9 +19,10 @@ get_jn_ribbon <- function(fig, data) {
            b < 0)
   temp$ns <- data %>%
     filter(sig == 0) %>%
-    mutate(diff = x - lag(x),
+    mutate(x_scale = scale_min_max(x),
+           diff = x_scale - lag(x_scale),
            diff = ifelse(is.na(diff), 0, diff))
-  idx <- which(temp$ns$diff > 1)
+  idx <- which(temp$ns$diff > .1)
 
   # ns
   if (length(idx) == 0) {
