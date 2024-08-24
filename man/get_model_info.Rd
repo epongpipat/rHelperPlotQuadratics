@@ -4,7 +4,7 @@
 \alias{get_model_info}
 \title{get_model_info}
 \usage{
-get_model_info(model, x_var = NULL, m_vars = NULL, x_step = 0.1, round = 3)
+get_model_info(model, x_var = NULL, m_vars = NULL, x_step = 0.01, round = 3)
 }
 \arguments{
 \item{round}{}
