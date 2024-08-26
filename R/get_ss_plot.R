@@ -17,7 +17,7 @@ get_ss_plot <- function(model, x_var, m_vars = NULL) {
     fig <- ggplot(ds_pred, aes(x, y))
   } else if (!is.null(m_vars)) {
     fig <- ggplot(ds_pred, aes(x, y, fill = m1)) +
-      facet_wrap(str_subset(colnames(ds_pred), 'm'), scales = 'free_y', ncol = 3, labeller = "label_both")
+      facet_wrap(str_subset(colnames(ds_pred), 'm'), ncol = 3, labeller = "label_both")
   }
 
   fig <- fig +

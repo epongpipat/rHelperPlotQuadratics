@@ -24,7 +24,7 @@ get_jn_plot <- function(model, x_var, m_vars = NULL) {
     fig <- ggplot(df_pred, aes(x, b))
   } else if (!is.null(m_vars)) {
     fig <- ggplot(df_pred, aes(x, b, fill = m1)) +
-      facet_wrap(str_subset(colnames(df_pred), 'm'), scales = 'free_y', ncol = 3, labeller = "label_both")
+      facet_wrap(str_subset(colnames(df_pred), 'm'), ncol = 3, labeller = "label_both")
   }
 
   # add x-axis
