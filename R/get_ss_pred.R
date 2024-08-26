@@ -20,14 +20,14 @@ get_ss_pred <- function(model_fit, info) {
                         x = info$data$unscaled[, info$vars$x$name],
                         y_ll = X %*% B_ll,
                         y_ul = X %*% B_ul)
-  if (is.null(model_fit[['m']])) {
+  if (is.null(info$vars$m)) {
     return(ds_pred)
   }
   for (m in 1:length(names(info$vars$m))) {
     if (info$vars$m[[m]]$type == 'factor') {
-      ds_pred[, glue("m{m}")] <- model_fit[['m']][[m]]
+      ds_pred[, glue("m{m}")] <- attributes(model_fit)[['m']][[m]]
     } else if (info$vars$m[[m]]$type == 'numeric') {
-      ds_pred[, glue("m{m}")] <- round(model_fit[['m']][[m]], 3)
+      ds_pred[, glue("m{m}")] <- round(attributes(model_fit)[['m']][[m]], 3)
     }
   }
   return(ds_pred)
@@ -51,7 +51,7 @@ get_ss_pred_all <- function(model, x_var, m_vars = NULL) {
   ds_pred <- lapply(models, function(m) get_ss_pred(m, info = info)) %>%
     abind(along = 1) %>%
     as.data.frame() %>%
-    select(contains('m'), everything())
+    select(contains('m'), 'x', everything())
   row.names(ds_pred) <- NULL
   for (j in 1:ncol(ds_pred)) {
       ds_pred[, j] <- as_numeric(ds_pred[, j])

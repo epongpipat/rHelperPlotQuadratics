@@ -19,9 +19,9 @@ get_models <- function(info, type = NULL) {
       temp$var <- colnames(info$grid[[type]])[j]
       temp$value <- info$grid[[type]][i, j]
       if (temp$var == info$vars$x$name) {
-        models[[i]][['x']] <- temp$value
+        attr(models[[i]], 'x') <- temp$value
       } else {
-        models[[i]][['m']][[temp$var]] <- temp$value
+        attr(models[[i]], 'm')[[temp$var]] <- temp$value
       }
     }
   }
