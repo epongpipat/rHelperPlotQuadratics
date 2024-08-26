@@ -46,17 +46,15 @@ get_jn_sig_all <- function(data, info) {
   grid <- info$grid$jn %>%
     select(-info$vars$x$name) %>%
     unique()
-  for (j in 1:ncol(grid)) {
-    if (is.numeric(grid[, j])) {
-      grid[, j] <- round(grid[, j], 3)
-    }
-  }
 
-  # data <- test$jn
-  # sig <- grid
   if (nrow(grid) == 0) {
     df_sig <- data.frame(range = get_jn_sig(data))
   } else {
+    for (j in 1:ncol(grid)) {
+      if (is.numeric(grid[, j])) {
+        grid[, j] <- round(grid[, j], 3)
+      }
+    }
     df_sig <- grid
     for (i in 1:nrow(grid)) {
       data_sub <- data
