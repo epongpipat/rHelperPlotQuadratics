@@ -52,7 +52,7 @@ as_numeric <- function(x) {
 #' @examples
 str_remove_scale_from_formula <- function(formula, term) {
   # formula <- info$vars$formula$ss
-  # term <- m_var
+  # term <- m_vars[1]
   idx <- list()
 
   idx$term <- str_locate_all(formula, term)[[1]]
@@ -67,7 +67,7 @@ str_remove_scale_from_formula <- function(formula, term) {
   for (i in 1:nrow(idx$term)) {
     temp <- list()
     temp$start <- idx$term[i, "start"] - 6
-    if (str_sub(formula, temp$start + 1, temp$start + 5) != 'scale') {
+    if (str_sub(formula, temp$start, temp$start + 4) != 'scale') {
       next()
     }
 
