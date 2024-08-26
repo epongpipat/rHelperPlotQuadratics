@@ -13,6 +13,10 @@
 get_caption_msg <- function(fig, info) {
   caption_msg <- glue("\nFormula:           {info$vars$formula$original}")
 
+  if (!is.null(names(info$vars$m))) {
+    caption_msg <- glue("{caption_msg}\nModerators:      {paste0(names(info$vars$m), collapse = ', ')}")
+  }
+
   if (length(info$vars$o$int_when_zero) > 0) {
     temp_vars <- info$vars$o$int_when_zero
     for (i in 1:length(temp_vars)) {
@@ -27,10 +31,10 @@ get_caption_msg <- function(fig, info) {
   if (length(info$vars$o$control) > 0) {
     caption_msg <- glue("{caption_msg}\nControlling for:  {paste0(info$vars$o$control, collapse = ', ')}")
   }
-  if (caption_msg != "") {
+  # if (caption_msg != "") {
     fig <- fig +
       theme(plot.caption = element_text(hjust = 0)) +
       labs(caption = glue("Note:\n{caption_msg}"))
-  }
+  # }
   return(fig)
 }
