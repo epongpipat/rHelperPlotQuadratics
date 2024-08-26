@@ -74,6 +74,7 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
   } else if (!is.null(m_vars)) {
     vars_filter <- c(x_var, m_vars)
   }
+
   vars$o$int_when_zero <- vars$formula$rh %>%
     str_split('[[+]]') %>%
     unlist() %>%
@@ -86,26 +87,11 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
     unique() %>%
     str_remove('scale\\(') %>%
     str_remove(', scale = F\\)')
+  vars$o$control <- vars$o$control[vars$o$control != vars$o$int_when_zero]
 
 
   grid <- list()
-  # x_step <- sd(ds_unscaled[, x_var])
 
-  # scale_min_max <- function(x) {
-  #   y <- (x - min(x)) / (max(x) - min(x))
-  #   attr(y, 'min') <- min(x)
-  #   attr(y, 'max') <- max(x)
-  #   return(y)
-  # }
-
-  # x_min <- min(ds_unscaled[, x_var])
-  # x_max <- max(ds_unscaled[, x_var])
-  # scale_min_max(ds_unscaled[, x_var])
-
-  # seq(from = 0, to = 1, by = 0.01) * (max(ds_unscaled[, x_var]) - min(ds_unscaled[, x_var])) + min(ds_unscaled[, x_var])
-
-  # grid$jn <- data.frame(seq(from = min(ds_unscaled[, x_var]), to = max(ds_unscaled[, x_var]), by = x_step))
-  # grid$jn <- data.frame(sort(unique(ds_unscaled[, x_var])))
   grid$jn <- data.frame(x = seq(from = 0, to = 1, by = x_step) * (max(ds_unscaled[, x_var]) - min(ds_unscaled[, x_var])) + min(ds_unscaled[, x_var]))
   colnames(grid$jn) <- x_var
 
@@ -126,18 +112,13 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
         vars$m[[m_var]]$levels_rounded <- round(vars$m[[m_var]]$levels, round)
         vars$formula$jn <- vars$formula$jn %>%
           str_remove_scale_from_formula(., m_var)
-        # update formula
-        # probably needs to be more thorough
         vars$formula$ss <- vars$formula$ss %>%
           str_remove_scale_from_formula(., m_var)
-          # str_replace_all(glue("scale\\({m_var}"), m_var) %>%
-          # str_replace_all(glue("{m_var}, scale = F\\)"), m_var)
-
       } else {
         warning("moderating variable must be of type numeric or factor")
       }
     }
-
+    vars$o$control <- vars$o$control[!(vars$o$control %in% names(vars$m))]
     temp <- purrr::map(vars$m, 'levels')
     temp[[x_var]] <- grid$jn[[x_var]]
     grid$jn <- expand.grid(temp) %>%
