@@ -17,18 +17,19 @@ get_jn_sig <- function(data) {
     )) %>%
     filter(sig == 1) %>%
     mutate(diff = x_scale - lag(x_scale),
-           diff_jump = diff > 0.1)
+           diff_jump = diff > 0.05)
   if (nrow(df_sig) == 0) {
     return("no significant values")
   }
-  if (length(which(df_sig$diff_jump)) > 1) {
+  idx <- which(df_sig$diff_jump)
+  if (length(idx) > 1) {
     print(df_sig)
     warning('more than one jump')
   }
-  if (length(which(df_sig$diff_jump)) == 0) {
+  if (length(idx) == 0) {
     range <- glue("[{min(df_sig$x)}, {max(df_sig$x)}]")
   } else {
-    idx <- which(df_sig$diff_jump)
+    # idx <- which(df_sig$diff_jump)
     range <- glue("[{min(df_sig$x)}, {df_sig$x[idx-1]}] U [{df_sig$x[idx]}, {max(df_sig$x)}]")
   }
   return(range)
