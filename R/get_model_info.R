@@ -110,6 +110,13 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
                                     "0sd" = vars$m[[m_var]]$mean,
                                     "+1sd" = vars$m[[m_var]]$mean + vars$m[[m_var]]$sd)
         vars$m[[m_var]]$levels_rounded <- round(vars$m[[m_var]]$levels, round)
+        while (length(unique(vars$m[[m_var]]$levels)) != length(unique(vars$m[[m_var]]$levels_rounded))) {
+          warning(glue('rounding ({round}) is too conservative for {m_var}, trying the next integer'))
+          round <- round + 1
+          vars$m[[m_var]]$levels_rounded <- round(vars$m[[m_var]]$levels, round)
+          #(original: {paste0(vars$m[[m_var]]$levels, collapse = ",")}; rounded: (original: {paste0(vars$m[[m_var]]$levels_rounded, collapse = ",")}
+          # vars$m[[m_var]]$levels_rounded <- formatC(temp$info$vars$m$icvf_right_mni152_parietal_sg_k_mc$levels, format = "e", digits = 2)
+        }
         vars$formula$jn <- vars$formula$jn %>%
           str_remove_scale_from_formula(., m_var)
         vars$formula$ss <- vars$formula$ss %>%
@@ -128,11 +135,13 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
 
   }
 
-
+  opts$x_step <- x_step
+  opts$round <- round
 
   info <- list(data = data,
                vars = vars,
-               grid = grid)
+               grid = grid,
+               opts = opts)
   return(info)
 }
 

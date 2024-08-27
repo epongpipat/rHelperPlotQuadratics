@@ -27,7 +27,7 @@ get_interaction_breakdown <- function(model, x_var, m_vars = NULL, type = c('ss'
     for (j in 1:ncol(data[['ss']])) {
       data[['ss']][, j] <- as_numeric(data[['ss']][, j])
       if (str_detect(colnames(data[["ss"]])[j], 'm') & is.numeric(data[["ss"]][, j])) {
-        data[["ss"]][, j] <- round(data[["ss"]][, j], 3)
+        data[["ss"]][, j] <- round(data[["ss"]][, j], info$opts$round)
       }
     }
     cat('\nsimple slopes:\n')
@@ -53,7 +53,7 @@ get_interaction_breakdown <- function(model, x_var, m_vars = NULL, type = c('ss'
     for (j in 1:ncol(data[["jn"]])) {
       data[["jn"]][, j] <- as_numeric(data[["jn"]][, j])
       if (str_detect(colnames(data[["jn"]])[j], 'm') & is.numeric(data[["jn"]][, j])) {
-        data[["jn"]][, j] <- round(data[["jn"]][, j], 3)
+        data[["jn"]][, j] <- round(data[["jn"]][, j], info$opts$round)
       }
     }
     cat('\njohnson-neyman intervals:\n')

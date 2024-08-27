@@ -56,7 +56,7 @@ get_jn_sig_all <- function(data, info) {
   } else {
     for (j in 1:ncol(grid)) {
       if (is.numeric(grid[, j])) {
-        grid[, j] <- round(grid[, j], 3)
+        grid[, j] <- round(grid[, j], info$opts$round)
       }
     }
     df_sig <- grid

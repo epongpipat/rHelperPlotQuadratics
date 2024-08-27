@@ -29,7 +29,7 @@ get_ss_pred <- function(model_fit, info) {
     if (info$vars$m[[m]]$type == 'factor') {
       ds_pred[, glue("m{m}")] <- attributes(model_fit)[['m']][[m]]
     } else if (info$vars$m[[m]]$type == 'numeric') {
-      ds_pred[, glue("m{m}")] <- round(attributes(model_fit)[['m']][[m]], 3)
+      ds_pred[, glue("m{m}")] <- round(attributes(model_fit)[['m']][[m]], info$opts$round)
     }
   }
   return(ds_pred)
@@ -50,10 +50,12 @@ get_ss_pred_all <- function(model, x_var, m_vars = NULL) {
   info <- get_model_info(model, x_var = x_var, m_vars = m_vars)
   models <- get_models(info, type = 'ss')
   df_coef <- get_interaction_breakdown(model, x_var, m_vars, type = 'ss')
-  ds_pred <- lapply(models, function(m) get_ss_pred(m, info = info)) %>%
+  data_pred <- lapply(models, function(m) get_ss_pred(m, info = info))
+  ds_pred <- data_pred %>%
     abind(along = 1) %>%
     as.data.frame() %>%
-    select(contains('m'), 'x', everything())
+    select(contains('m'), 'x', everything()) %>%
+    as.data.frame()
   row.names(ds_pred) <- NULL
   for (j in 1:ncol(ds_pred)) {
       ds_pred[, j] <- as_numeric(ds_pred[, j])
