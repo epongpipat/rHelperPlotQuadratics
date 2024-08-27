@@ -16,11 +16,14 @@ get_jn_sig <- function(data) {
       TRUE ~ 0
     )) %>%
     filter(sig == 1) %>%
-    mutate(
-           diff = x_scale - lag(x_scale),
+    mutate(diff = x_scale - lag(x_scale),
            diff_jump = diff > 0.1)
   if (nrow(df_sig) == 0) {
     return("no significant values")
+  }
+  if (length(which(df_sig$diff_jump)) > 1) {
+    print(df_sig)
+    warning('more than one jump')
   }
   if (length(which(df_sig$diff_jump)) == 0) {
     range <- glue("[{min(df_sig$x)}, {max(df_sig$x)}]")

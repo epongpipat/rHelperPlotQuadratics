@@ -18,12 +18,15 @@ get_jn_ribbon <- function(fig, data) {
     filter(sig == 1,
            b < 0)
   temp$ns <- data %>%
+    mutate(x_scale = scale_min_max(x)) %>%
     filter(sig == 0) %>%
-    mutate(x_scale = scale_min_max(x),
-           diff = x_scale - lag(x_scale),
+    mutate(diff = x_scale - lag(x_scale),
            diff = ifelse(is.na(diff), 0, diff))
   idx <- which(temp$ns$diff > .1)
-
+  if (length(idx) > 1) {
+    print(temp$ns)
+    warning('more than one jump')
+  }
   # ns
   if (length(idx) == 0) {
     fig <- fig +
