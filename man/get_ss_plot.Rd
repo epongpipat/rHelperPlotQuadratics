@@ -4,7 +4,12 @@
 \alias{get_ss_plot}
 \title{get_ss_plot}
 \usage{
-get_ss_plot(model, x_var, m_vars = NULL)
+get_ss_plot(
+  model,
+  x_var,
+  m_vars = NULL,
+  facet_wrap_opts = list(ncol = 3, scales = "fixed", labeller = "label_both")
+)
 }
 \arguments{
 \item{m_vars}{}

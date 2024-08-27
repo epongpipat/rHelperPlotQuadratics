@@ -4,7 +4,7 @@
 \alias{get_plot}
 \title{get_plot}
 \usage{
-get_plot(model, x_var, m_vars = NULL, type = c("ss", "jn"))
+get_plot(model, x_var, m_vars = NULL, type = c("ss", "jn"), ...)
 }
 \arguments{
 \item{type}{}

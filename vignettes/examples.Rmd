@@ -1,0 +1,86 @@
+---
+title: "Examples"
+output: html_document
+---
+
+# Libraries
+
+```{r}
+library(rHelperPlotQuadratics)
+library(broom)
+```
+
+# Data
+
+```{r}
+df <- carData::Salaries
+head(df)
+```
+
+# Plot Quadratic Effects
+
+```{r}
+model_fit <- lm(salary ~ scale(yrs.since.phd, scale = F) + I(scale(yrs.since.phd, scale = F)^2), df)
+tidy(model_fit)
+```
+
+## Plot
+
+```{r, fig.width=5, fig.height=6}
+get_plot(model = model_fit,
+         x_var = 'yrs.since.phd')
+```
+
+# With Categorical Moderator
+
+```{r}
+model_fit <- lm(salary ~ scale(yrs.since.phd, scale = F) * rank + I(scale(yrs.since.phd, scale = F)^2) * rank, df)
+tidy(model_fit)
+```
+
+## Plot
+
+```{r, fig.height=6}
+get_plot(model = model_fit, 
+         x_var = 'yrs.since.phd', 
+         m_vars = 'rank', 
+         facet_wrap_opts = list(ncol = 3,
+                                scales = 'free_y',
+                                labeller = 'label_both'))
+```
+
+# With Continuous Moderator
+
+```{r}
+model_fit <- lm(salary ~ scale(yrs.since.phd, scale = F) * scale(yrs.service, scale = F) + I(scale(yrs.since.phd, scale = F)^2) * scale(yrs.service, scale = F), df)
+tidy(model_fit)
+```
+
+## Plot
+
+```{r, fig.height=6}
+get_plot(model = model_fit, 
+         x_var = 'yrs.since.phd', 
+         m_vars = 'yrs.service', 
+         facet_wrap_opts = list(ncol = 3,
+                                scales = 'free_y',
+                                labeller = 'label_both'))
+```
+
+# With Categorical and Continuous Moderators
+
+```{r}
+model_fit <- lm(salary ~ scale(yrs.since.phd, scale = F) * scale(yrs.service, scale = F) * rank + I(scale(yrs.since.phd, scale = F)^2) * scale(yrs.service, scale = F) * rank, df)
+tidy(model_fit)
+```
+
+## Plot
+
+```{r, fig.height=12}
+get_plot(model = model_fit, 
+         x_var = 'yrs.since.phd', 
+         m_vars = c('rank', 'yrs.service'), 
+         facet_wrap_opts = list(ncol = 3,
+                                scales = 'free_y',
+                                labeller = 'label_both'))
+```
