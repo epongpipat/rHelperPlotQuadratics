@@ -15,7 +15,9 @@ get_ss_pred <- function(model_fit, info) {
   B_ll <- as.matrix(ds_ci[, 1])
   B_ul <- as.matrix(ds_ci[, 2])
   X <- model.matrix(model_fit)
-  X[, str_detect(colnames(X), paste0(info$vars$o$names, collapse = '|'))] <- 0
+  if (length(info$vars$o$names) > 0) {
+    X[, str_detect(colnames(X), paste0(info$vars$o$names, collapse = '|'))] <- 0
+  }
   ds_pred <- data.frame(y = X %*% B,
                         x = info$data$unscaled[, info$vars$x$name],
                         y_ll = X %*% B_ll,
