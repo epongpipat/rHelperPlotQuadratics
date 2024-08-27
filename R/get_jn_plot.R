@@ -12,7 +12,9 @@
 #' @import ggplot2
 #' @importFrom glue glue
 #' @examples
-get_jn_plot <- function(model, x_var, m_vars = NULL) {
+get_jn_plot <- function(model, x_var, m_vars = NULL, facet_wrap_opts = list(ncol = 3,
+                                                                            scales = 'fixed',
+                                                                            labeller = 'label_both')) {
   info <- get_model_info(model, x_var = x_var, m_vars = m_vars)
   df_pred <- get_jn_slopes(model, x_var = x_var, m_vars = m_vars)
   grid <- df_pred %>%
@@ -23,8 +25,9 @@ get_jn_plot <- function(model, x_var, m_vars = NULL) {
   if (is.null(m_vars)) {
     fig <- ggplot(df_pred, aes(x, b))
   } else if (!is.null(m_vars)) {
-    fig <- ggplot(df_pred, aes(x, b, fill = m1)) +
-      facet_wrap(str_subset(colnames(df_pred), 'm'), ncol = 3, labeller = "label_both")
+    fig <- ggplot(df_pred, aes(x, b, fill = m1))
+    facet_wrap_opts[['facets']] <- str_subset(colnames(df_pred), 'm')
+    fig <- fig + do.call(facet_wrap, facet_wrap_opts)
   }
 
   # add x-axis
