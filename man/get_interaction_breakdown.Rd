@@ -4,7 +4,7 @@
 \alias{get_interaction_breakdown}
 \title{get_interaction_breakdown}
 \usage{
-get_interaction_breakdown(model, x_var, m_vars = NULL, type = c("ss", "jn"))
+get_interaction_breakdown(info, type = c("ss", "jn"))
 }
 \arguments{
 \item{type}{}

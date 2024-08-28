@@ -1,7 +1,17 @@
+template:
+  light-switch: true
+  theme: solarized
+  theme-dark: solarized-dark
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news]
+    right: [search, github, lightswitch]
+
 authors:
   - Ekarin E. Pongpipat:
     - href: https://ekarinpongpipat.com
-      
+
 reference:
 - title: Functions
 - contents:

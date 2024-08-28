@@ -4,7 +4,7 @@
 \alias{get_jn_slopes}
 \title{get_jn_slopes}
 \usage{
-get_jn_slopes(model, x_var, m_vars = NULL)
+get_jn_slopes(info)
 }
 \arguments{
 \item{m_vars}{}

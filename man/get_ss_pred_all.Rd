@@ -4,10 +4,10 @@
 \alias{get_ss_pred_all}
 \title{get_ss_pred_all}
 \usage{
-get_ss_pred_all(model, x_var, m_vars = NULL)
+get_ss_pred_all(info)
 }
 \arguments{
-\item{m_vars}{}
+\item{info}{}
 }
 \value{
 
