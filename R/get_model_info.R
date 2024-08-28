@@ -135,6 +135,7 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
 
   }
 
+  opts <- list()
   opts$x_step <- x_step
   opts$round <- round
 
