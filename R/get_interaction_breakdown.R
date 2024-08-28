@@ -1,8 +1,6 @@
 #' get_interaction_breakdown
 #'
-#' @param model
-#' @param x_var
-#' @param m_vars
+#' @param info
 #' @param type
 #'
 #' @return
@@ -10,8 +8,7 @@
 #' @importFrom abind abind
 #' @import dplyr
 #' @examples
-get_interaction_breakdown <- function(model, x_var, m_vars = NULL, type = c('ss', 'jn')) {
-  info <- get_model_info(model, x_var = x_var, m_vars = m_vars)
+get_interaction_breakdown <- function(info, type = c('ss', 'jn')) {
   models <- list()
   df_tidy <- list()
   data <- list()

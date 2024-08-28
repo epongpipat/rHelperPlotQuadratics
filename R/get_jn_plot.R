@@ -16,7 +16,7 @@ get_jn_plot <- function(model, x_var, m_vars = NULL, facet_wrap_opts = list(ncol
                                                                             scales = 'fixed',
                                                                             labeller = 'label_both')) {
   info <- get_model_info(model, x_var = x_var, m_vars = m_vars)
-  df_pred <- get_jn_slopes(model, x_var = x_var, m_vars = m_vars)
+  df_pred <- get_jn_slopes(info)
   grid <- df_pred %>%
     select(contains('m')) %>%
     unique()

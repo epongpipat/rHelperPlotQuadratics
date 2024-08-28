@@ -13,7 +13,8 @@ get_ss_plot <- function(model, x_var, m_vars = NULL, facet_wrap_opts = list(ncol
                                                                             scales = 'fixed',
                                                                             labeller = 'label_both')) {
   info <- get_model_info(model, x_var = x_var, m_vars = m_vars)
-  ds_pred <- get_ss_pred_all(model, x_var = x_var, m_vars = m_vars)
+  # ds_pred <- get_ss_pred_all(model, x_var = x_var, m_vars = m_vars)
+  ds_pred <- get_ss_pred_all(info)
 
   if (is.null(m_vars)) {
     fig <- ggplot(ds_pred, aes(x, y))

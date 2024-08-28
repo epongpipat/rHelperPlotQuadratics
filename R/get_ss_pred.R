@@ -38,18 +38,15 @@ get_ss_pred <- function(model_fit, info) {
 
 #' get_ss_pred_all
 #'
-#' @param model
-#' @param x_var
-#' @param m_vars
+#' @param info
 #'
 #' @return
 #' @export
 #' @import dplyr
 #' @examples
-get_ss_pred_all <- function(model, x_var, m_vars = NULL) {
-  info <- get_model_info(model, x_var = x_var, m_vars = m_vars)
+get_ss_pred_all <- function(info) {
   models <- get_models(info, type = 'ss')
-  df_coef <- get_interaction_breakdown(model, x_var, m_vars, type = 'ss')
+  df_coef <- get_interaction_breakdown(info, type = 'ss')
   data_pred <- lapply(models, function(m) get_ss_pred(m, info = info))
   ds_pred <- data_pred %>%
     abind(along = 1) %>%
