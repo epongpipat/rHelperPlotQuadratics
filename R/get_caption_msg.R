@@ -7,11 +7,15 @@
 #' @export
 #' @concept viz
 #' @importFrom stringr str_detect
+#' @importFrom stringr str_replace
 #' @importFrom glue glue
 #' @import ggplot2
 #' @examples
 get_caption_msg <- function(fig, info) {
-  caption_msg <- glue("\nFormula:           {info$vars$formula$original}")
+  formula_str <- info$vars$formula$original %>%
+    str_replace('[[~]]', '~\n                            ') %>%
+    str_replace_all('[[+]]', '+\n                            ')
+  caption_msg <- glue("\nFormula:           {formula_str}")
 
   if (!is.null(names(info$vars$m))) {
     caption_msg <- glue("{caption_msg}\nModerators:      {paste0(names(info$vars$m), collapse = ', ')}")
