@@ -181,3 +181,21 @@ scale_min_max <- function(x) {
   attr(y, 'max') <- max(x, na.rm = TRUE)
   return(y)
 }
+
+
+
+#' get_formula
+#'
+#' @param model
+#'
+#' @return
+#' @export
+#' @concept util
+#' @examples
+get_formula <- function(model) {
+  lh <- as.character(model$terms[[2]])
+  op <- as.character(model$terms[[1]])
+  rhs <- as.character(model$terms[[3]])
+  rh <- paste(as.character(rhs[2]), as.character(rhs[1]), as.character(rhs[3]))
+  return(paste(lh, op, rh))
+}
