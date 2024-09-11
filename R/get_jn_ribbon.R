@@ -8,43 +8,55 @@
 #' @concept viz
 #' @import dplyr
 #' @import ggplot2
+#' @importFrom stringr str_subset
 #' @examples
 get_jn_ribbon <- function(fig, data) {
-  temp <- list()
-  temp$sig_pos <- data %>%
-    filter(sig == 1,
-           b > 0)
-  temp$sig_neg <- data %>%
-    filter(sig == 1,
-           b < 0)
-  temp$ns <- data %>%
-    mutate(x_scale = scale_min_max(x)) %>%
-    filter(sig == 0) %>%
-    mutate(diff = x_scale - lag(x_scale),
-           diff = ifelse(is.na(diff), 0, diff))
-  idx <- which(temp$ns$diff > .1)
-  if (length(idx) > 1) {
-    print(temp$ns)
-    warning('more than one jump')
-  }
-  # ns
-  if (length(idx) == 0) {
-    fig <- fig +
-      geom_ribbon(aes(ymin = b_ci_95_ll, ymax = b_ci_95_ul), data = temp$ns, alpha = 0.25)
+  m_vars <- colnames(data) %>% str_subset('m')
+  df <- NULL
+  c <- 1
+  if (length(m_vars) == 0) {
+    df <- data %>%
+      arrange(x)
+    for (j in 1:nrow(df)) {
+      if (j == 1) {
+        df$segment[j] <- c
+        next()
+      }
+      if (df$sig[j] != df$sig[j-1]) {
+        c <- c + 1
+      }
+      df$segment[j] <- c
+    }
   } else {
-    fig <- fig +
-      geom_ribbon(aes(ymin = b_ci_95_ll, ymax = b_ci_95_ul), data = temp$ns[1:(idx-1), ], alpha = 0.1) +
-      geom_ribbon(aes(ymin = b_ci_95_ll, ymax = b_ci_95_ul), data = temp$ns[(idx):nrow(temp$ns), ], alpha = 0.1)
+    for (m_key in m_vars) {
+      for (m_value in unique(data[, m_key])) {
+        df_temp <- data[data[, m_key] == m_value, ]
+        for (j in 1:nrow(df_temp)) {
+          if (j == 1) {
+            df_temp$segment[j] <- c
+            next()
+          }
+          if (df_temp$sig[j] != df_temp$sig[j-1]) {
+            c <- c + 1
+          }
+          df_temp$segment[j] <- c
+        }
+        c <- c + 1
+        df <- rbind(df, df_temp)
+      }
+    }
   }
-
-  # sig
-  if (nrow(temp$sig_neg) > 0) {
-    fig <- fig +
-      geom_ribbon(aes(ymin = b_ci_95_ll, ymax = b_ci_95_ul), data = temp$sig_neg, alpha = 0.5)
-  }
-  if (nrow(temp$sig_pos) > 0) {
-    fig <- fig +
-      geom_ribbon(aes(ymin = b_ci_95_ll, ymax = b_ci_95_ul), data = temp$sig_pos, alpha = 0.5)
+  for (i in 1:length(unique(df$segment))) {
+    df_temp <- df %>%
+      filter(segment == i)
+    if (df_temp$sig[1]) {
+      fig <- fig +
+        geom_ribbon(aes(ymin = b_ci_95_ll, ymax = b_ci_95_ul), data = df_temp, alpha = 0.5)
+    } else {
+      fig <- fig +
+        geom_ribbon(aes(ymin = b_ci_95_ll, ymax = b_ci_95_ul), data = df_temp, alpha = 0.25)
+    }
   }
   return(fig)
 }
+
