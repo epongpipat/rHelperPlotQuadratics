@@ -20,6 +20,20 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
   ds_unscaled <- unscale_data(ds)
   data <- list(original = ds,
                unscaled = ds_unscaled)
+
+  # check
+  if (!sum(str_detect(colnames(ds_unscaled), x_var))) {
+    stop(glue('x_var ({x_var}) not found in dataset'))
+  }
+
+  if (!is.null(m_vars)) {
+    for (m_var in m_vars) {
+      if (!sum(str_detect(colnames(ds_unscaled), m_var))) {
+        stop(glue('m_var ({m_var}) not found in dataset'))
+      }
+    }
+  }
+
   v <- colnames(ds) %>% str_subset(x_var)
   v_clean <- str_remove_fun_from_term(v)
   v <- v[v_clean == x_var]
@@ -87,7 +101,8 @@ get_model_info <- function(model, x_var = NULL, m_vars = NULL, x_step = .01, rou
     unique() %>%
     str_remove('scale\\(') %>%
     str_remove(', scale = F\\)')
-  vars$o$control <- vars$o$control[vars$o$control != vars$o$int_when_zero]
+
+  vars$o$control <- vars$o$control[!(vars$o$control %in% vars$o$int_when_zero)]
 
 
   grid <- list()
