@@ -8,31 +8,43 @@
 #' @importFrom glue glue
 #' @examples
 get_jn_sig <- function(data) {
-  df_sig <- data %>%
-    mutate(x_scale = scale_min_max(x),
-           sig = case_when(
-      b_ci_95_ll > 0 & b_ci_95_ul > 0 ~ 1,
-      b_ci_95_ll < 0 & b_ci_95_ul < 0 ~ 1,
-      TRUE ~ 0
-    )) %>%
-    filter(sig == 1) %>%
-    mutate(diff = x_scale - lag(x_scale),
-           diff_jump = diff > 0.05)
+  df <- data %>%
+    mutate(sig = case_when(
+             b_ci_95_ll > 0 & b_ci_95_ul > 0 ~ 1,
+             b_ci_95_ll < 0 & b_ci_95_ul < 0 ~ 1,
+             TRUE ~ 0
+           )) %>%
+    arrange(x)
+  c <- 1
+  for (i in 1:nrow(df)) {
+    if (i == 1) {
+      df$segment[i] <- 1
+      next()
+    }
+    if (df$sig[i] != df$sig[i-1]) {
+      c <- c + 1
+    }
+    df$segment[i] <- c
+  }
+  df_sig <- df %>%
+    filter(sig == 1)
   if (nrow(df_sig) == 0) {
     return("no significant values")
   }
-  idx <- which(df_sig$diff_jump)
-  if (length(idx) > 1) {
-    print(df_sig)
-    warning('more than one jump')
+  ranges <- list()
+  for (i in unique(df_sig$segment)) {
+    df_temp <- df_sig %>%
+      filter(segment == i)
+    ranges[[as.character(i)]] <- glue("[{min(df_temp$x)}, {max(df_temp$x)}]")
   }
-  if (length(idx) == 0) {
-    range <- glue("[{min(df_sig$x)}, {max(df_sig$x)}]")
+
+
+  if (length(ranges) == 1) {
+    range_str <- ranges[[1]]
   } else {
-    # idx <- which(df_sig$diff_jump)
-    range <- glue("[{min(df_sig$x)}, {df_sig$x[idx-1]}] U [{df_sig$x[idx]}, {max(df_sig$x)}]")
+    range_str <- paste(ranges, collapse = " U ")
   }
-  return(range)
+  return(range_str)
 }
 
 #' get_jn_sig_all
