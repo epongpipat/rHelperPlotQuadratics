@@ -3,6 +3,7 @@
 export(as_numeric)
 export(get_caption_msg)
 export(get_data)
+export(get_formula)
 export(get_interaction_breakdown)
 export(get_jn_plot)
 export(get_jn_ribbon)
