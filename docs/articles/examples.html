@@ -19,8 +19,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rHelperPlotQuadratics</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -43,7 +41,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -53,6 +51,12 @@
       <a href="../articles/examples.html">Examples</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -65,7 +69,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="examples_files/header-attrs-2.27/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Examples</h1>
@@ -78,229 +82,272 @@
 
     
     
-<div class="section level2">
-<h2 id="libraries">Libraries<a class="anchor" aria-label="anchor" href="#libraries"></a>
-</h2>
+<div id="libraries" class="section level1">
+<h1 class="hasAnchor">
+<a href="#libraries" class="anchor"></a>Libraries</h1>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rHelperPlotQuadratics</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/" class="external-link">broom</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rHelperPlotQuadratics</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></code></pre></div>
+<pre><code>## Warning: package 'broom' was built under R version 4.1.2</code></pre>
 </div>
-<div class="section level2">
-<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
-</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">carData</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/carData/man/Salaries.html" class="external-link">Salaries</a></span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">##        rank discipline yrs.since.phd yrs.service  sex salary</span>
-<span class="co">## 1      Prof          B            19          18 Male 139750</span>
-<span class="co">## 2      Prof          B            20          16 Male 173200</span>
-<span class="co">## 3  AsstProf          B             4           3 Male  79750</span>
-<span class="co">## 4      Prof          B            45          39 Male 115000</span>
-<span class="co">## 5      Prof          B            40          41 Male 141500</span>
-<span class="co">## 6 AssocProf          B             6           6 Male  97000</span></code></pre>
+<div id="data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#data" class="anchor"></a>Data</h1>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">carData</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/carData/man/Salaries.html">Salaries</a></span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></code></pre></div>
+<pre><code>##        rank discipline yrs.since.phd yrs.service  sex salary
+## 1      Prof          B            19          18 Male 139750
+## 2      Prof          B            20          16 Male 173200
+## 3  AsstProf          B             4           3 Male  79750
+## 4      Prof          B            45          39 Male 115000
+## 5      Prof          B            40          41 Male 141500
+## 6 AssocProf          B             6           6 Male  97000</code></pre>
 </div>
-<div class="section level2">
-<h2 id="plot-quadratic-effects">Plot Quadratic Effects<a class="anchor" aria-label="anchor" href="#plot-quadratic-effects"></a>
-</h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, <span class="va">df</span><span class="op">)</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span>
-<span class="co">##   term                                 estimate std.error statistic   p.value</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> (Intercept)                          <span style="text-decoration: underline;">124</span>265.    <span style="text-decoration: underline;">1</span>744.       71.3  3.29<span style="color: #949494;">e</span><span style="color: #BB0000;">-227</span></span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> scale(yrs.since.phd, scale = F)        <span style="text-decoration: underline;">1</span>231.     102.       12.0  1.11<span style="color: #949494;">e</span><span style="color: #BB0000;">- 28</span></span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> I(scale(yrs.since.phd, scale = F)^2)    -<span style="color: #BB0000;">63.7</span>      7.25     -<span style="color: #BB0000;">8.80</span> 4.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 17</span></span></code></pre>
-<div class="section level3">
-<h3 id="plot">Plot<a class="anchor" aria-label="anchor" href="#plot"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div id="plot-quadratic-effects" class="section level1">
+<h1 class="hasAnchor">
+<a href="#plot-quadratic-effects" class="anchor"></a>Plot Quadratic Effects</h1>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, <span class="va">df</span><span class="op">)</span>
+<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 5
+##   term                                 estimate std.error statistic   p.value
+##   &lt;chr&gt;                                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                          124265.    1744.       71.3  3.29e-227
+## 2 scale(yrs.since.phd, scale = F)        1231.     102.       12.0  1.11e- 28
+## 3 I(scale(yrs.since.phd, scale = F)^2)    -63.7      7.25     -8.80 4.46e- 17</code></pre>
+<div id="plot" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plot" class="anchor"></a>Plot</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/get_plot.html">get_plot</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_fit</span>,
          x_var <span class="op">=</span> <span class="st">'yrs.since.phd'</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">## simple slopes:</span>
-<span class="co">##                                     rh         b      se         t            p</span>
-<span class="co">## 1 I(scale(yrs.since.phd, scale = F)^2) -63.73916 7.24579 -8.796717 4.457591e-17</span>
-<span class="co">##   b_ci_95_ll b_ci_95_ul</span>
-<span class="co">## 1  -77.98441  -49.49392</span>
-<span class="co">## </span>
-<span class="co">## johnson-neyman intervals:</span>
-<span class="co">##                    range</span>
-<span class="co">## 1 [1, 29.6] U [35.1, 56]</span></code></pre>
+<pre><code>## 
+## simple slopes:
+##                                     rh         b      se         t            p
+## 1 I(scale(yrs.since.phd, scale = F)^2) -63.73916 7.24579 -8.796717 4.457591e-17
+##   b_ci_95_ll b_ci_95_ul        p_mcc sig
+## 1  -77.98441  -49.49392 4.457591e-17   1
+##                                     rh         b      se         t            p
+## 1 I(scale(yrs.since.phd, scale = F)^2) -63.73916 7.24579 -8.796717 4.457591e-17
+##   b_ci_95_ll b_ci_95_ul        p_mcc sig
+## 1  -77.98441  -49.49392 4.457591e-17   1
+## 
+## johnson-neyman intervals:
+##                    range
+## 1 [1, 29.6] U [35.1, 56]</code></pre>
 <p><img src="examples_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="with-categorical-moderator">With Categorical Moderator<a class="anchor" aria-label="anchor" href="#with-categorical-moderator"></a>
-</h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span>, <span class="va">df</span><span class="op">)</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 9 × 5</span></span>
-<span class="co">##   term                                      estimate std.error statistic p.value</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> (Intercept)                               <span style="text-decoration: underline;">70</span>264.     <span style="text-decoration: underline;">106</span>559.    0.659    0.510</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> scale(yrs.since.phd, scale = F)            -<span style="color: #BB0000;">726.</span>      <span style="text-decoration: underline;">13</span>015.   -<span style="color: #BB0000;">0.055</span><span style="color: #BB0000; text-decoration: underline;">8</span>   0.956</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> rankAssocProf                             <span style="text-decoration: underline;">19</span>930.     <span style="text-decoration: underline;">106</span>717.    0.187    0.852</span>
-<span class="co">## <span style="color: #BCBCBC;">4</span> rankProf                                  <span style="text-decoration: underline;">58</span>479.     <span style="text-decoration: underline;">106</span>574.    0.549    0.584</span>
-<span class="co">## <span style="color: #BCBCBC;">5</span> I(scale(yrs.since.phd, scale = F)^2)         -<span style="color: #BB0000;">6.53</span>      391.   -<span style="color: #BB0000;">0.016</span><span style="color: #BB0000; text-decoration: underline;">7</span>   0.987</span>
-<span class="co">## <span style="color: #BCBCBC;">6</span> scale(yrs.since.phd, scale = F):rankAsso…   284.      <span style="text-decoration: underline;">13</span>019.    0.021<span style="text-decoration: underline;">8</span>   0.983</span>
-<span class="co">## <span style="color: #BCBCBC;">7</span> scale(yrs.since.phd, scale = F):rankProf   <span style="text-decoration: underline;">1</span>411.      <span style="text-decoration: underline;">13</span>017.    0.108    0.914</span>
-<span class="co">## <span style="color: #BCBCBC;">8</span> rankAssocProf:I(scale(yrs.since.phd, sca…    11.2       392.    0.028<span style="text-decoration: underline;">6</span>   0.977</span>
-<span class="co">## <span style="color: #BCBCBC;">9</span> rankProf:I(scale(yrs.since.phd, scale = …   -<span style="color: #BB0000;">37.6</span>       392.   -<span style="color: #BB0000;">0.096</span><span style="color: #BB0000; text-decoration: underline;">1</span>   0.924</span></code></pre>
-<div class="section level3">
-<h3 id="plot-1">Plot<a class="anchor" aria-label="anchor" href="#plot-1"></a>
-</h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div id="with-categorical-moderator" class="section level1">
+<h1 class="hasAnchor">
+<a href="#with-categorical-moderator" class="anchor"></a>With Categorical Moderator</h1>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span>, <span class="va">df</span><span class="op">)</span>
+<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 9 × 5
+##   term                                      estimate std.error statistic p.value
+##   &lt;chr&gt;                                        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)                               70264.     106559.    0.659    0.510
+## 2 scale(yrs.since.phd, scale = F)            -726.      13015.   -0.0558   0.956
+## 3 rankAssocProf                             19930.     106717.    0.187    0.852
+## 4 rankProf                                  58479.     106574.    0.549    0.584
+## 5 I(scale(yrs.since.phd, scale = F)^2)         -6.53      391.   -0.0167   0.987
+## 6 scale(yrs.since.phd, scale = F):rankAsso…   284.      13019.    0.0218   0.983
+## 7 scale(yrs.since.phd, scale = F):rankProf   1411.      13017.    0.108    0.914
+## 8 rankAssocProf:I(scale(yrs.since.phd, sca…    11.2       392.    0.0286   0.977
+## 9 rankProf:I(scale(yrs.since.phd, scale = …   -37.6       392.   -0.0961   0.924</code></pre>
+<div id="plot-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plot-1" class="anchor"></a>Plot</h2>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/get_plot.html">get_plot</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_fit</span>, 
          x_var <span class="op">=</span> <span class="st">'yrs.since.phd'</span>, 
          m_vars <span class="op">=</span> <span class="st">'rank'</span>, 
-         facet_wrap_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,
+         facet_wrap_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,
                                 scales <span class="op">=</span> <span class="st">'free_y'</span>,
                                 labeller <span class="op">=</span> <span class="st">'label_both'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">## simple slopes:</span>
-<span class="co">##        rank                                   rh          b        se</span>
-<span class="co">## 1  AsstProf I(scale(yrs.since.phd, scale = F)^2)  -6.531685 391.37140</span>
-<span class="co">## 2 AssocProf I(scale(yrs.since.phd, scale = F)^2)   4.684854  25.02869</span>
-<span class="co">## 3      Prof I(scale(yrs.since.phd, scale = F)^2) -44.147510  12.63665</span>
-<span class="co">##             t            p b_ci_95_ll b_ci_95_ul</span>
-<span class="co">## 1 -0.01668923 0.9866931000 -776.00570  762.94230</span>
-<span class="co">## 2  0.18717935 0.8516179000  -44.52397   53.89368</span>
-<span class="co">## 3 -3.49360890 0.0005314837  -68.99238  -19.30263</span>
-<span class="co">## </span>
-<span class="co">## johnson-neyman intervals:</span>
-<span class="co">##        rank                 range</span>
-<span class="co">## 1  AsstProf no significant values</span>
-<span class="co">## 2 AssocProf no significant values</span>
-<span class="co">## 3      Prof [1, 25.75] U [34, 56]</span></code></pre>
+<pre><code>## 
+## simple slopes:
+##        rank                                   rh          b        se
+## 1  AsstProf I(scale(yrs.since.phd, scale = F)^2)  -6.531685 391.37140
+## 2 AssocProf I(scale(yrs.since.phd, scale = F)^2)   4.684854  25.02869
+## 3      Prof I(scale(yrs.since.phd, scale = F)^2) -44.147510  12.63665
+##             t            p b_ci_95_ll b_ci_95_ul       p_mcc sig
+## 1 -0.01668923 0.9866931000 -776.00570  762.94230 0.986693100   0
+## 2  0.18717935 0.8516179000  -44.52397   53.89368 0.986693100   0
+## 3 -3.49360890 0.0005314837  -68.99238  -19.30263 0.002870012   1
+##          m1                                   rh          b        se
+## 1  AsstProf I(scale(yrs.since.phd, scale = F)^2)  -6.531685 391.37140
+## 2 AssocProf I(scale(yrs.since.phd, scale = F)^2)   4.684854  25.02869
+## 3      Prof I(scale(yrs.since.phd, scale = F)^2) -44.147510  12.63665
+##             t            p b_ci_95_ll b_ci_95_ul       p_mcc sig
+## 1 -0.01668923 0.9866931000 -776.00570  762.94230 0.986693100   0
+## 2  0.18717935 0.8516179000  -44.52397   53.89368 0.986693100   0
+## 3 -3.49360890 0.0005314837  -68.99238  -19.30263 0.002870012   1
+## 
+## johnson-neyman intervals:
+##        rank                 range
+## 1  AsstProf no significant values
+## 2 AssocProf no significant values
+## 3      Prof [1, 25.75] U [34, 56]</code></pre>
 <p><img src="examples_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="with-continuous-moderator">With Continuous Moderator<a class="anchor" aria-label="anchor" href="#with-continuous-moderator"></a>
-</h2>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>, <span class="va">df</span><span class="op">)</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 6 × 5</span></span>
-<span class="co">##   term                                    estimate std.error statistic   p.value</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> (Intercept)                              1.25<span style="color: #949494;">e</span>+5  <span style="text-decoration: underline;">1</span>848.       67.5   1.30<span style="color: #949494;">e</span><span style="color: #BB0000;">-217</span></span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> scale(yrs.since.phd, scale = F)          9.63<span style="color: #949494;">e</span>+2   314.        3.06  2.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-  3</span></span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> scale(yrs.service, scale = F)            1.20<span style="color: #949494;">e</span>+2   293.        0.409 6.83<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span></span>
-<span class="co">## <span style="color: #BCBCBC;">4</span> I(scale(yrs.since.phd, scale = F)^2)    -<span style="color: #BB0000;">1.26</span><span style="color: #949494;">e</span>+1    22.7      -<span style="color: #BB0000;">0.558</span> 5.77<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span></span>
-<span class="co">## <span style="color: #BCBCBC;">5</span> scale(yrs.since.phd, scale = F):scale(… -<span style="color: #BB0000;">6.27</span><span style="color: #949494;">e</span>+1    26.2      -<span style="color: #BB0000;">2.40</span>  1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-  2</span></span>
-<span class="co">## <span style="color: #BCBCBC;">6</span> scale(yrs.service, scale = F):I(scale(…  7.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>     0.536     1.36  1.76<span style="color: #949494;">e</span><span style="color: #BB0000;">-  1</span></span></code></pre>
-<div class="section level3">
-<h3 id="plot-2">Plot<a class="anchor" aria-label="anchor" href="#plot-2"></a>
-</h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div id="with-continuous-moderator" class="section level1">
+<h1 class="hasAnchor">
+<a href="#with-continuous-moderator" class="anchor"></a>With Continuous Moderator</h1>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>, <span class="va">df</span><span class="op">)</span>
+<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##   term                                    estimate std.error statistic   p.value
+##   &lt;chr&gt;                                      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)                              1.25e+5  1848.       67.5   1.30e-217
+## 2 scale(yrs.since.phd, scale = F)          9.63e+2   314.        3.06  2.34e-  3
+## 3 scale(yrs.service, scale = F)            1.20e+2   293.        0.409 6.83e-  1
+## 4 I(scale(yrs.since.phd, scale = F)^2)    -1.26e+1    22.7      -0.558 5.77e-  1
+## 5 scale(yrs.since.phd, scale = F):scale(… -6.27e+1    26.2      -2.40  1.70e-  2
+## 6 scale(yrs.service, scale = F):I(scale(…  7.27e-1     0.536     1.36  1.76e-  1</code></pre>
+<div id="plot-2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plot-2" class="anchor"></a>Plot</h2>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/get_plot.html">get_plot</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_fit</span>, 
          x_var <span class="op">=</span> <span class="st">'yrs.since.phd'</span>, 
          m_vars <span class="op">=</span> <span class="st">'yrs.service'</span>, 
-         facet_wrap_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,
+         facet_wrap_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,
                                 scales <span class="op">=</span> <span class="st">'free_y'</span>,
                                 labeller <span class="op">=</span> <span class="st">'label_both'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">## simple slopes:</span>
-<span class="co">##   yrs.service                                   rh          b       se</span>
-<span class="co">## 1       4.609 I(scale(yrs.since.phd, scale = F)^2) -22.104140 21.53401</span>
-<span class="co">## 2      17.615 I(scale(yrs.since.phd, scale = F)^2) -12.648520 22.67723</span>
-<span class="co">## 3      30.621 I(scale(yrs.since.phd, scale = F)^2)  -3.192904 25.72983</span>
-<span class="co">##            t         p b_ci_95_ll b_ci_95_ul</span>
-<span class="co">## 1 -1.0264758 0.3053019  -64.44107   20.23279</span>
-<span class="co">## 2 -0.5577631 0.5773254  -57.23308   31.93604</span>
-<span class="co">## 3 -0.1240935 0.9013050  -53.77902   47.39321</span>
-<span class="co">## </span>
-<span class="co">## johnson-neyman intervals:</span>
-<span class="co">##   yrs.service                 range</span>
-<span class="co">## 1       4.609             [1, 32.9]</span>
-<span class="co">## 2      17.615        [14.75, 31.25]</span>
-<span class="co">## 3      30.621 no significant values</span></code></pre>
+<pre><code>## 
+## simple slopes:
+##   yrs.service                                   rh          b       se
+## 1       4.609 I(scale(yrs.since.phd, scale = F)^2) -22.104140 21.53401
+## 2      17.615 I(scale(yrs.since.phd, scale = F)^2) -12.648520 22.67723
+## 3      30.621 I(scale(yrs.since.phd, scale = F)^2)  -3.192904 25.72983
+##            t         p b_ci_95_ll b_ci_95_ul     p_mcc sig
+## 1 -1.0264758 0.3053019  -64.44107   20.23279 0.4579529   0
+## 2 -0.5577631 0.5773254  -57.23308   31.93604 0.7679040   0
+## 3 -0.1240935 0.9013050  -53.77902   47.39321 0.9013050   0
+##       m1                                   rh          b       se          t
+## 1  4.609 I(scale(yrs.since.phd, scale = F)^2) -22.104140 21.53401 -1.0264758
+## 2 17.615 I(scale(yrs.since.phd, scale = F)^2) -12.648520 22.67723 -0.5577631
+## 3 30.621 I(scale(yrs.since.phd, scale = F)^2)  -3.192904 25.72983 -0.1240935
+##           p b_ci_95_ll b_ci_95_ul     p_mcc sig
+## 1 0.3053019  -64.44107   20.23279 0.4579529   0
+## 2 0.5773254  -57.23308   31.93604 0.7679040   0
+## 3 0.9013050  -53.77902   47.39321 0.9013050   0
+## 
+## johnson-neyman intervals:
+##   yrs.service                 range
+## 1       4.609             [1, 32.9]
+## 2      17.615        [14.75, 31.25]
+## 3      30.621 no significant values</code></pre>
+<pre><code>## Warning: Using alpha for a discrete variable is not advised.</code></pre>
 <p><img src="examples_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="with-categorical-and-continuous-moderators">With Categorical and Continuous Moderators<a class="anchor" aria-label="anchor" href="#with-categorical-and-continuous-moderators"></a>
-</h2>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span>, <span class="va">df</span><span class="op">)</span>
-<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 18 × 5</span></span>
-<span class="co">##    term                                     estimate std.error statistic p.value</span>
-<span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;"> 1</span> (Intercept)                               <span style="text-decoration: underline;">503</span>461.  1<span style="text-decoration: underline;">091</span>234.     0.461   0.645</span>
-<span class="co">## <span style="color: #BCBCBC;"> 2</span> scale(yrs.since.phd, scale = F)            <span style="text-decoration: underline;">59</span>701.   <span style="text-decoration: underline;">137</span>755.     0.433   0.665</span>
-<span class="co">## <span style="color: #BCBCBC;"> 3</span> scale(yrs.service, scale = F)              <span style="text-decoration: underline;">24</span>232.    <span style="text-decoration: underline;">68</span>880.     0.352   0.725</span>
-<span class="co">## <span style="color: #BCBCBC;"> 4</span> rankAssocProf                            -<span style="color: #BB0000; text-decoration: underline;">413</span><span style="color: #BB0000;">743.</span>  1<span style="text-decoration: underline;">091</span>250.    -<span style="color: #BB0000;">0.379</span>   0.705</span>
-<span class="co">## <span style="color: #BCBCBC;"> 5</span> rankProf                                 -<span style="color: #BB0000; text-decoration: underline;">373</span><span style="color: #BB0000;">690.</span>  1<span style="text-decoration: underline;">091</span>236.    -<span style="color: #BB0000;">0.342</span>   0.732</span>
-<span class="co">## <span style="color: #BCBCBC;"> 6</span> I(scale(yrs.since.phd, scale = F)^2)        <span style="text-decoration: underline;">2</span>105.     <span style="text-decoration: underline;">4</span>285.     0.491   0.624</span>
-<span class="co">## <span style="color: #BCBCBC;"> 7</span> scale(yrs.since.phd, scale = F):scale(y…    <span style="text-decoration: underline;">3</span>397.     <span style="text-decoration: underline;">8</span>635.     0.393   0.694</span>
-<span class="co">## <span style="color: #BCBCBC;"> 8</span> scale(yrs.since.phd, scale = F):rankAss…  -<span style="color: #BB0000; text-decoration: underline;">60</span><span style="color: #BB0000;">076.</span>   <span style="text-decoration: underline;">137</span>758.    -<span style="color: #BB0000;">0.436</span>   0.663</span>
-<span class="co">## <span style="color: #BCBCBC;"> 9</span> scale(yrs.since.phd, scale = F):rankProf  -<span style="color: #BB0000; text-decoration: underline;">58</span><span style="color: #BB0000;">977.</span>   <span style="text-decoration: underline;">137</span>755.    -<span style="color: #BB0000;">0.428</span>   0.669</span>
-<span class="co">## <span style="color: #BCBCBC;">10</span> scale(yrs.service, scale = F):rankAssoc…  -<span style="color: #BB0000; text-decoration: underline;">24</span><span style="color: #BB0000;">547.</span>    <span style="text-decoration: underline;">68</span>889.    -<span style="color: #BB0000;">0.356</span>   0.722</span>
-<span class="co">## <span style="color: #BCBCBC;">11</span> scale(yrs.service, scale = F):rankProf    -<span style="color: #BB0000; text-decoration: underline;">24</span><span style="color: #BB0000;">288.</span>    <span style="text-decoration: underline;">68</span>881.    -<span style="color: #BB0000;">0.353</span>   0.725</span>
-<span class="co">## <span style="color: #BCBCBC;">12</span> scale(yrs.service, scale = F):I(scale(y…     120.      267.     0.449   0.654</span>
-<span class="co">## <span style="color: #BCBCBC;">13</span> rankAssocProf:I(scale(yrs.since.phd, sc…   -<span style="color: #BB0000; text-decoration: underline;">2</span><span style="color: #BB0000;">124.</span>     <span style="text-decoration: underline;">4</span>286.    -<span style="color: #BB0000;">0.496</span>   0.620</span>
-<span class="co">## <span style="color: #BCBCBC;">14</span> rankProf:I(scale(yrs.since.phd, scale =…   -<span style="color: #BB0000; text-decoration: underline;">2</span><span style="color: #BB0000;">127.</span>     <span style="text-decoration: underline;">4</span>285.    -<span style="color: #BB0000;">0.496</span>   0.620</span>
-<span class="co">## <span style="color: #BCBCBC;">15</span> scale(yrs.since.phd, scale = F):scale(y…   -<span style="color: #BB0000; text-decoration: underline;">3</span><span style="color: #BB0000;">377.</span>     <span style="text-decoration: underline;">8</span>636.    -<span style="color: #BB0000;">0.391</span>   0.696</span>
-<span class="co">## <span style="color: #BCBCBC;">16</span> scale(yrs.since.phd, scale = F):scale(y…   -<span style="color: #BB0000; text-decoration: underline;">3</span><span style="color: #BB0000;">446.</span>     <span style="text-decoration: underline;">8</span>635.    -<span style="color: #BB0000;">0.399</span>   0.690</span>
-<span class="co">## <span style="color: #BCBCBC;">17</span> scale(yrs.service, scale = F):rankAssoc…    -<span style="color: #BB0000;">119.</span>      267.    -<span style="color: #BB0000;">0.447</span>   0.655</span>
-<span class="co">## <span style="color: #BCBCBC;">18</span> scale(yrs.service, scale = F):rankProf:…    -<span style="color: #BB0000;">119.</span>      267.    -<span style="color: #BB0000;">0.445</span>   0.657</span></code></pre>
-<div class="section level3">
-<h3 id="plot-3">Plot<a class="anchor" aria-label="anchor" href="#plot-3"></a>
-</h3>
+<div id="with-categorical-and-continuous-moderators" class="section level1">
+<h1 class="hasAnchor">
+<a href="#with-categorical-and-continuous-moderators" class="anchor"></a>With Categorical and Continuous Moderators</h1>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">salary</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.since.phd</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html">scale</a></span><span class="op">(</span><span class="va">yrs.service</span>, scale <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">*</span> <span class="va">rank</span>, <span class="va">df</span><span class="op">)</span>
+<span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">model_fit</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 18 × 5
+##    term                                     estimate std.error statistic p.value
+##    &lt;chr&gt;                                       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+##  1 (Intercept)                               503461.  1091234.     0.461   0.645
+##  2 scale(yrs.since.phd, scale = F)            59701.   137755.     0.433   0.665
+##  3 scale(yrs.service, scale = F)              24232.    68880.     0.352   0.725
+##  4 rankAssocProf                            -413743.  1091250.    -0.379   0.705
+##  5 rankProf                                 -373690.  1091236.    -0.342   0.732
+##  6 I(scale(yrs.since.phd, scale = F)^2)        2105.     4285.     0.491   0.624
+##  7 scale(yrs.since.phd, scale = F):scale(y…    3397.     8635.     0.393   0.694
+##  8 scale(yrs.since.phd, scale = F):rankAss…  -60076.   137758.    -0.436   0.663
+##  9 scale(yrs.since.phd, scale = F):rankProf  -58977.   137755.    -0.428   0.669
+## 10 scale(yrs.service, scale = F):rankAssoc…  -24547.    68889.    -0.356   0.722
+## 11 scale(yrs.service, scale = F):rankProf    -24288.    68881.    -0.353   0.725
+## 12 scale(yrs.service, scale = F):I(scale(y…     120.      267.     0.449   0.654
+## 13 rankAssocProf:I(scale(yrs.since.phd, sc…   -2124.     4286.    -0.496   0.620
+## 14 rankProf:I(scale(yrs.since.phd, scale =…   -2127.     4285.    -0.496   0.620
+## 15 scale(yrs.since.phd, scale = F):scale(y…   -3377.     8636.    -0.391   0.696
+## 16 scale(yrs.since.phd, scale = F):scale(y…   -3446.     8635.    -0.399   0.690
+## 17 scale(yrs.service, scale = F):rankAssoc…    -119.      267.    -0.447   0.655
+## 18 scale(yrs.service, scale = F):rankProf:…    -119.      267.    -0.445   0.657</code></pre>
+<div id="plot-3" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plot-3" class="anchor"></a>Plot</h2>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/get_plot.html">get_plot</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_fit</span>, 
          x_var <span class="op">=</span> <span class="st">'yrs.since.phd'</span>, 
-         m_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rank'</span>, <span class="st">'yrs.service'</span><span class="op">)</span>, 
-         facet_wrap_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,
+         m_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'rank'</span>, <span class="st">'yrs.service'</span><span class="op">)</span>, 
+         facet_wrap_opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span>,
                                 scales <span class="op">=</span> <span class="st">'free_y'</span>,
                                 labeller <span class="op">=</span> <span class="st">'label_both'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">## simple slopes:</span>
-<span class="co">##        rank yrs.service                                   rh           b</span>
-<span class="co">## 1  AsstProf       4.609 I(scale(yrs.since.phd, scale = F)^2)  547.027100</span>
-<span class="co">## 2 AssocProf       4.609 I(scale(yrs.since.phd, scale = F)^2)  -26.130460</span>
-<span class="co">## 3      Prof       4.609 I(scale(yrs.since.phd, scale = F)^2)  -35.782930</span>
-<span class="co">## 4  AsstProf      17.615 I(scale(yrs.since.phd, scale = F)^2) 2104.608500</span>
-<span class="co">## 5 AssocProf      17.615 I(scale(yrs.since.phd, scale = F)^2)  -19.316190</span>
-<span class="co">## 6      Prof      17.615 I(scale(yrs.since.phd, scale = F)^2)  -22.111880</span>
-<span class="co">## 7  AsstProf      30.621 I(scale(yrs.since.phd, scale = F)^2) 3662.190000</span>
-<span class="co">## 8 AssocProf      30.621 I(scale(yrs.since.phd, scale = F)^2)  -12.501930</span>
-<span class="co">## 9      Prof      30.621 I(scale(yrs.since.phd, scale = F)^2)   -8.440835</span>
-<span class="co">##           se          t         p   b_ci_95_ll  b_ci_95_ul</span>
-<span class="co">## 1  912.45160  0.5995135 0.5491887  -1247.07450  2341.12860</span>
-<span class="co">## 2   83.69617 -0.3122062 0.7550555   -190.69750   138.43650</span>
-<span class="co">## 3   34.62964 -1.0333034 0.3021208   -103.87320    32.30736</span>
-<span class="co">## 4 4284.77020  0.4911835 0.6235810  -6320.29080 10529.50790</span>
-<span class="co">## 5   93.48957 -0.2066134 0.8364228   -203.13940   164.50700</span>
-<span class="co">## 6   29.64982 -0.7457679 0.4562699    -80.41062    36.18686</span>
-<span class="co">## 7 7743.35400  0.4729462 0.6365238 -11563.12550 18887.50540</span>
-<span class="co">## 8  116.17050 -0.1076170 0.9143564   -240.92140   215.91760</span>
-<span class="co">## 9   29.19251 -0.2891438 0.7726294    -65.84041    48.95874</span>
-<span class="co">## </span>
-<span class="co">## johnson-neyman intervals:</span>
-<span class="co">##        rank yrs.service                 range</span>
-<span class="co">## 1  AsstProf       4.609 no significant values</span>
-<span class="co">## 2 AssocProf       4.609 no significant values</span>
-<span class="co">## 3      Prof       4.609         [8.15, 27.95]</span>
-<span class="co">## 4  AsstProf      17.615 no significant values</span>
-<span class="co">## 5 AssocProf      17.615 no significant values</span>
-<span class="co">## 6      Prof      17.615         [24.1, 25.75]</span>
-<span class="co">## 7  AsstProf      30.621 no significant values</span>
-<span class="co">## 8 AssocProf      30.621 no significant values</span>
-<span class="co">## 9      Prof      30.621 no significant values</span></code></pre>
-<pre><code><span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span>
-<span class="co">## Joining with `by = join_by(m1, m2)`</span></code></pre>
+<pre><code>## 
+## simple slopes:
+##        rank yrs.service                                   rh           b
+## 1  AsstProf       4.609 I(scale(yrs.since.phd, scale = F)^2)  547.027100
+## 2 AssocProf       4.609 I(scale(yrs.since.phd, scale = F)^2)  -26.130460
+## 3      Prof       4.609 I(scale(yrs.since.phd, scale = F)^2)  -35.782930
+## 4  AsstProf      17.615 I(scale(yrs.since.phd, scale = F)^2) 2104.608500
+## 5 AssocProf      17.615 I(scale(yrs.since.phd, scale = F)^2)  -19.316190
+## 6      Prof      17.615 I(scale(yrs.since.phd, scale = F)^2)  -22.111880
+## 7  AsstProf      30.621 I(scale(yrs.since.phd, scale = F)^2) 3662.190000
+## 8 AssocProf      30.621 I(scale(yrs.since.phd, scale = F)^2)  -12.501930
+## 9      Prof      30.621 I(scale(yrs.since.phd, scale = F)^2)   -8.440835
+##           se          t         p   b_ci_95_ll  b_ci_95_ul     p_mcc sig
+## 1  912.45160  0.5995135 0.5491887  -1247.07450  2341.12860 0.9294160   0
+## 2   83.69617 -0.3122062 0.7550555   -190.69750   138.43650 0.9294160   0
+## 3   34.62964 -1.0333034 0.3021208   -103.87320    32.30736 0.9294160   0
+## 4 4284.77020  0.4911835 0.6235810  -6320.29080 10529.50790 0.9294160   0
+## 5   93.48957 -0.2066134 0.8364228   -203.13940   164.50700 0.9294160   0
+## 6   29.64982 -0.7457679 0.4562699    -80.41062    36.18686 0.9294160   0
+## 7 7743.35400  0.4729462 0.6365238 -11563.12550 18887.50540 0.9294160   0
+## 8  116.17050 -0.1076170 0.9143564   -240.92140   215.91760 0.9443359   0
+## 9   29.19251 -0.2891438 0.7726294    -65.84041    48.95874 0.9294160   0
+##          m1     m2                                   rh           b         se
+## 1  AsstProf  4.609 I(scale(yrs.since.phd, scale = F)^2)  547.027100  912.45160
+## 2 AssocProf  4.609 I(scale(yrs.since.phd, scale = F)^2)  -26.130460   83.69617
+## 3      Prof  4.609 I(scale(yrs.since.phd, scale = F)^2)  -35.782930   34.62964
+## 4  AsstProf 17.615 I(scale(yrs.since.phd, scale = F)^2) 2104.608500 4284.77020
+## 5 AssocProf 17.615 I(scale(yrs.since.phd, scale = F)^2)  -19.316190   93.48957
+## 6      Prof 17.615 I(scale(yrs.since.phd, scale = F)^2)  -22.111880   29.64982
+## 7  AsstProf 30.621 I(scale(yrs.since.phd, scale = F)^2) 3662.190000 7743.35400
+## 8 AssocProf 30.621 I(scale(yrs.since.phd, scale = F)^2)  -12.501930  116.17050
+## 9      Prof 30.621 I(scale(yrs.since.phd, scale = F)^2)   -8.440835   29.19251
+##            t         p   b_ci_95_ll  b_ci_95_ul     p_mcc sig
+## 1  0.5995135 0.5491887  -1247.07450  2341.12860 0.9294160   0
+## 2 -0.3122062 0.7550555   -190.69750   138.43650 0.9294160   0
+## 3 -1.0333034 0.3021208   -103.87320    32.30736 0.9294160   0
+## 4  0.4911835 0.6235810  -6320.29080 10529.50790 0.9294160   0
+## 5 -0.2066134 0.8364228   -203.13940   164.50700 0.9294160   0
+## 6 -0.7457679 0.4562699    -80.41062    36.18686 0.9294160   0
+## 7  0.4729462 0.6365238 -11563.12550 18887.50540 0.9294160   0
+## 8 -0.1076170 0.9143564   -240.92140   215.91760 0.9443359   0
+## 9 -0.2891438 0.7726294    -65.84041    48.95874 0.9294160   0
+## 
+## johnson-neyman intervals:
+##        rank yrs.service                 range
+## 1  AsstProf       4.609 no significant values
+## 2 AssocProf       4.609 no significant values
+## 3      Prof       4.609         [8.15, 27.95]
+## 4  AsstProf      17.615 no significant values
+## 5 AssocProf      17.615 no significant values
+## 6      Prof      17.615         [24.1, 25.75]
+## 7  AsstProf      30.621 no significant values
+## 8 AssocProf      30.621 no significant values
+## 9      Prof      30.621 no significant values</code></pre>
+<pre><code>## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`
+## Joining with `by = join_by(m1, m2)`</code></pre>
+<pre><code>## Warning: Using alpha for a discrete variable is not advised.</code></pre>
 <p><img src="examples_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 </div>
@@ -317,14 +364,11 @@
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by Ekarin E. Pongpipat.</p>
+  <p>Developed by Ekarin E. Pongpipat.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -332,8 +376,6 @@
 
   
 
-
-  
 
   </body>
 </html>

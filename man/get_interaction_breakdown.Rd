@@ -4,7 +4,12 @@
 \alias{get_interaction_breakdown}
 \title{get_interaction_breakdown}
 \usage{
-get_interaction_breakdown(info, type = c("ss", "jn"))
+get_interaction_breakdown(
+  info,
+  type = c("ss", "jn"),
+  p_adjust = "fdr",
+  a_thr = 0.05
+)
 }
 \arguments{
 \item{type}{}
