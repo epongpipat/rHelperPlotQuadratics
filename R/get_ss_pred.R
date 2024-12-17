@@ -57,7 +57,7 @@ get_ss_pred_all <- function(info) {
   for (j in 1:ncol(ds_pred)) {
     ds_pred[, j] <- as_numeric(ds_pred[, j])
   }
-  print(df_coef)
+  # print(df_coef)
 
   if (!is.null(info$vars$m)) {
     ds_pred <- as.data.frame(ds_pred) |>
