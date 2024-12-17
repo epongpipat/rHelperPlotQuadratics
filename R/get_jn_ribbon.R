@@ -11,7 +11,7 @@
 #' @importFrom stringr str_subset
 #' @examples
 get_jn_ribbon <- function(fig, data) {
-  m_vars <- colnames(data) %>% str_subset('m')
+  m_vars <- colnames(data) %>% str_subset('m[0-9]+')
   df <- NULL
   c <- 1
   if (length(m_vars) == 0) {

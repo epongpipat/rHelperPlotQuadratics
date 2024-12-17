@@ -26,7 +26,7 @@ get_jn_plot <- function(model, x_var, m_vars = NULL, facet_wrap_opts = list(ncol
     fig <- ggplot(df_pred, aes(x, b))
   } else if (!is.null(m_vars)) {
     fig <- ggplot(df_pred, aes(x, b, fill = m1))
-    facet_wrap_opts[['facets']] <- str_subset(colnames(df_pred), 'm')
+    facet_wrap_opts[['facets']] <- str_subset(colnames(df_pred), 'm[0-9]+')
     fig <- fig + do.call(facet_wrap, facet_wrap_opts)
   }
 

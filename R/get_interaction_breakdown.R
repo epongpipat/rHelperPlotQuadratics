@@ -8,7 +8,7 @@
 #' @importFrom abind abind
 #' @import dplyr
 #' @examples
-get_interaction_breakdown <- function(info, type = c('ss', 'jn')) {
+get_interaction_breakdown <- function(info, type = c('ss', 'jn'), p_adjust = 'fdr', a_thr = 0.05) {
   models <- list()
   df_tidy <- list()
   data <- list()
@@ -21,16 +21,21 @@ get_interaction_breakdown <- function(info, type = c('ss', 'jn')) {
     data[['ss']] <- abind(df_tidy[['ss']], along = 1) %>%
       as.data.frame() #%>%
       # filter(rh == info$vars$x$p2)
-    for (j in 1:ncol(data[['ss']])) {
-      data[['ss']][, j] <- as_numeric(data[['ss']][, j])
-      if (str_detect(colnames(data[["ss"]])[j], 'm') & is.numeric(data[["ss"]][, j])) {
-        data[["ss"]][, j] <- round(data[["ss"]][, j], info$opts$round)
+      for (j in 1:ncol(data[["ss"]])) {
+        data[["ss"]][, j] <- as_numeric(data[["ss"]][, j])
+        if (str_detect(colnames(data[["ss"]])[j], "m[0-9]+") & is.numeric(data[["ss"]][, j])) {
+          data[["ss"]][, j] <- round(data[["ss"]][, j], info$opts$round)
+        }
       }
-    }
-    cat('\nsimple slopes:\n')
-    df_temp <- data[["ss"]] %>%
+    data[["ss"]] <- data[["ss"]] %>%
+      mutate(
+        p_mcc = p.adjust(p, method = p_adjust),
+        sig = ifelse(p_mcc < a_thr, 1, 0)
+      ) %>%
       filter(rh == info$vars$x$p2)
-    colnames(df_temp)[str_detect(colnames(df_temp), 'm')] <- names(info$vars$m)
+    cat('\nsimple slopes:\n')
+    df_temp <- data[["ss"]]
+    colnames(df_temp)[str_detect(colnames(df_temp), 'm[0-9]+')] <- names(info$vars$m)
     # for (i in 1:ncol(df_temp)) {
     #
     # }

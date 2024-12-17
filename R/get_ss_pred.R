@@ -46,17 +46,23 @@ get_ss_pred <- function(model_fit, info) {
 #' @examples
 get_ss_pred_all <- function(info) {
   models <- get_models(info, type = 'ss')
-  df_coef <- get_interaction_breakdown(info, type = 'ss')
+  df_coef <- get_interaction_breakdown(info, type = 'ss')[['ss']]
   data_pred <- lapply(models, function(m) get_ss_pred(m, info = info))
   ds_pred <- data_pred %>%
     abind(along = 1) %>%
     as.data.frame() %>%
-    select(contains('m'), 'x', everything()) %>%
+    select(contains('m[0-9]+'), 'x', everything()) %>%
     as.data.frame()
   row.names(ds_pred) <- NULL
   for (j in 1:ncol(ds_pred)) {
-      ds_pred[, j] <- as_numeric(ds_pred[, j])
+    ds_pred[, j] <- as_numeric(ds_pred[, j])
   }
-  ds_pred <- as.data.frame(ds_pred)
+  print(df_coef)
+
+  if (!is.null(info$vars$m)) {
+    ds_pred <- as.data.frame(ds_pred) |>
+      left_join(df_coef, by = str_subset(colnames(ds_pred), "m[0-9]+"))
+  }
+  
   return(ds_pred)
 }
